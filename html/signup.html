@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Signup</title>
+        <link rel="stylesheet" href="../css/signup.css"/>
+        <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+        <script
+      src="https://kit.fontawesome.com/b23c7cc76f.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/12a8440031.js"
+      crossorigin="anonymous"
+    ></script>
+    </head>
+    <body>
+        <div class="container">
+            <form id="form" action="/">
+                <h3 class="text-center">Sign up</h3>
+                <div class="input-control">
+                    <label for="firstname">First Name</label>
+                    <input id="firstname" name="firstname" type="text">
+                    <div class="error"></div>
+                </div>
+                <div class="input-control">
+                    <label for="lastname">Last Name</label>
+                    <input id="lastname" name="lastname" type="text">
+                    <div class="error"></div>
+                </div>
+                <div class="input-control">
+                    <label for="email">Email</label>
+                    <input id="email"name="email" type="text">
+                    <div class="error"></div>
+                </div>
+                
+                <div data-role="main" class="ui-content border border-white">
+                    <form method="post" action="/action_page_post.php">
+                      <fieldset data-role="controlgroup">
+                      <label class="mb-1">Choose your gender:</label><br/>
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" id="male" value="male" checked>
+                        <label for="female">Female</label>
+                        <input type="radio" name="gender" id="female" value="female">
+                      </fieldset> 
+                
+               
+                <div class="input-control">
+                    <label for="password" class="mt-3">Password</label>
+                    <input id="password"name="password" type="password">
+                    <div class="error"></div>
+                </div>
+                <div class="input-control">
+                    <label for="re-enter">Re-enter Password</label>
+                    <input id="re-enter"name="city" type="password">
+                    <div class="error"></div>
+                </div>
+                <div class="input-control">
+                    <label for="state">State/Province</label>
+                    <input id="state"name="state" type="text">
+                    <div class="error"></div>
+                </div>
+                <button type="button" onclick="saveData()">submit</button>
+            </form>
+        </div>
+    
+        <script>
+    const form = document.getElementById('form');
+    const firstname = document.getElementById('firstname');
+    const lastname = document.getElementById('lastname');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const reenter = document.getElementById('re-enter');
+    const state = document.getElementById('state');
+    
+    form.addEventListener('button', e => {
+        e.preventDefault();
+    
+        validateInputs();
+        ;
+    });
+    
+    const setError = (element, message) => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+    
+        errorDisplay.innerText = message;
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success')
+    }
+    
+    const setSuccess = element => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+    
+        errorDisplay.innerText = '';
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+    };
+    
+    
+    const validateInputs = () => {
+        const firstnameValue = firstname.value.trim();
+        const lastnameValue = lastname.value.trim();
+        const emailValue = email.value.trim();
+        const passwordValue = password.value.trim();
+        const reenterValue = reenter.value.trim();
+        const stateValue = state.value.trim();
+    
+    
+        if(firstnameValue === '') {
+            
+            setError(firstname, 'Firstname is required');
+        } else {
+            setSuccess(firstname);
+        }
+    
+        if(lastnameValue === '') {
+            setError(lastname, 'Lastname is required');
+        } else {
+            setSuccess(lastname);
+        }
+    
+        if(emailValue === '') {
+            setError(email, 'Email is required');
+        } else if (emailValue.length < 2 ) {
+            setError(email, 'Password must be at least 8 character.')
+        } else {
+            setSuccess(email);
+        }
+    
+        if(passwordValue === '') {
+            setError(password, 'Please confirm your password');
+        } else if (passwordValue < 8) {
+            setError(password, "Passwords doesn't match");
+        } else {
+            setSuccess(password);
+        }
+        if(reenterValue === '') {
+            setError(reenter, 'Re-enter your password');
+        } else {
+            setSuccess(reenter);
+        }
+        if(stateValue === '') {
+            setError(state, 'Enter your State/Province');
+        } else {
+            setSuccess(state);
+        }
+    
+    };
+
+    function saveData(){
+    const formval = document.getElementById('form').value;
+    const firstnameval = document.getElementById('firstname').value;
+    const lastnameval= document.getElementById('lastname').value;
+    const emailval = document.getElementById('email').value;
+    const passwordval = document.getElementById('password').value;
+    const reenterval = document.getElementById('re-enter').value;
+    const stateval = document.getElementById('state').value;
+
+    let user_record = new Array()
+    user_record= JSON.parse(localStorage.getItem("users"))?JSON.parse(localStorage.getItem("users")):[]
+    if (user_record.some((v)=>{v.email== email}))
+    {
+
+        alert('duplicated data')
+    } else{
+        user_record.push({
+        "firstname":firstnameval,
+        "email":emailval,
+        "lastname":lastnameval,
+        "password":passwordval,
+        "re-enter": reenterval
+
+
+    })
+    window.location.href='login.html'
+    }
+    
+    localStorage.setItem("users", JSON.stringify(user_record))}
+   
+   
+    
+        </script>
+        <script src="../js/routing.js"></script>
+    </body>
+</html>
